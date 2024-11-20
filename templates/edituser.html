@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Edit user Details{% endblock %}
+
+
+{% block content %}
+
+<h1>Edit user</h1>
+
+<div class="form edit debt">
+    <table>
+        <div class="update debt">
+            <form action="" method="post">
+                <tr>
+                    <td>
+                        <input type="hidden" name="action" value="update_debt"></input><br>
+                        <label class="col-form-label">Update Debt:</label><input type="text" name="debt" placeholder="Rs.{{datas.debt}}" autofocus="">
+                        <input type="submit" value="Update" class="btn btn-primary">
+                    </td>
+                </form>
+                </div>
+                <div class="debt reset">
+                    <form  method="post">
+                        <td style="padding:12px,0px,0px,12px;">
+                            <input type="hidden" name="action" value="reset_debt">
+                            <input type="submit" value="Reset" class="btn btn-danger">
+                        </td>
+                </tr>
+            </form>
+        </div>
+        </div>
+    </table>
+<div class="form edit username">
+    <form  method="post">
+        <input type="hidden" name="action" value="update_user"></input><br>
+        <label >Update Username:</label><input type="text" name="name" placeholder="{{datas.user}}">
+        <input type="submit" value="change" class="btn btn-success">
+    </form>
+</div>
+<div class="form edit password">
+    <form action="" method="post">
+        <input type="hidden" name="action" value="update_password"></input><br>
+        <label >Update Password:</label><input type="text" name="password" placeholder="password" required>
+        <input type="submit" value="change">
+    </form>
+</div>
+<div class="form delete user">
+    <form action="" method="post">
+        <input type="hidden" name="action" value="delete_user"></input><br>
+        <label >Delete user:</label><input type="text" name="delete" placeholder="Enter username here to delete ">
+        <input type="submit" value="Delete">
+    </form>
+</div>
+
+
+<a href="{{ url_for('admin')}}">Return to the admin</a>
+
+{% endblock %}

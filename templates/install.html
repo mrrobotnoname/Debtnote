@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Create a Admin{% endblock %}
+
+{% block content %}
+
+    
+    <div class="werning-massage">
+   <p>This page will create the shop owner accout.
+        Creating a account using this page will automatically delete any exsisting
+         debt recodes and remove all users in current users(if there is any)</p>
+    </div>
+    <div class="container-register">
+        <form action="" method="post">
+            <div class="install-form">
+                <input type="text" name="username" id="username" placeholder="username" required=""><br><br>
+                <input type="password" name="password" id="passowrd" placeholder="Password" required=""><br><br>
+                <br><hr>
+                <input type="text" name="adminpass" id="adminpass" placeholder="adminpass" required="">
+                <input type="submit" value="Install">
+            </div>
+        </form>
+    </div>
+
+    {% endblock %}

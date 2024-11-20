@@ -1,0 +1,22 @@
+{%extends "base.html" %}
+{% block title %}User Pannel{% endblock %}
+
+
+{% block content %}
+<h1>Wellcome to User Pannel {{datas.user}}</h1>
+ 
+<table border="1px">
+    <tr>
+        <td>Name</td>
+        <td>Debt</td>
+        <td>Last Transaction Date</td>
+    </tr>
+    {% for data in datas%}
+    <tr>
+        <td>{{data.user}}</td>
+        <td>Rs.{{data.debt}}</td>
+        <td>{{data.created_at.strftime('%Y-%m-%d')}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
