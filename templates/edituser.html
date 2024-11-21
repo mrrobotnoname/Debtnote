@@ -7,28 +7,20 @@
 <h1>Edit user</h1>
 
 <div class="form edit debt">
-    <table>
         <div class="update debt">
             <form action="" method="post">
-                <tr>
-                    <td>
-                        <input type="hidden" name="action" value="update_debt"></input><br>
-                        <label class="col-form-label">Update Debt:</label><input type="text" name="debt" placeholder="Rs.{{datas.debt}}" autofocus="">
-                        <input type="submit" value="Update" class="btn btn-primary">
-                    </td>
-                </form>
-                </div>
-                <div class="debt reset">
-                    <form  method="post">
-                        <td style="padding:12px,0px,0px,12px;">
-                            <input type="hidden" name="action" value="reset_debt">
-                            <input type="submit" value="Reset" class="btn btn-danger">
-                        </td>
-                </tr>
+                <input type="hidden" name="action" value="update_debt"></in ><br>
+                <label class="col-form-label">Update Debt:</label><input type="text" name="debt" placeholder="Rs.{{datas.debt}}" autofocus="">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="debt reset">
+            <form  method="post">
+                <input type="hidden" name="action" value="reset_debt">
+                <input type="submit" value="Reset" class="btn btn-danger">                
             </form>
         </div>
         </div>
-    </table>
 <div class="form edit username">
     <form  method="post">
         <input type="hidden" name="action" value="update_user"></input><br>
@@ -53,5 +45,19 @@
 
 
 <a href="{{ url_for('admin')}}">Return to the admin</a>
+
+<script>
+function sendValue() {
+    const value = "reset_debt";
+
+    fetch('/admin/edituser/<int:id>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ value: value })
+    })
+}
+</script>
 
 {% endblock %}

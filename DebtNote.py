@@ -23,6 +23,7 @@ class User(db.Model):
     password = db.Column(db.CHAR(100), unique = True, nullable = False)
     user_level = db.Column(db.Integer, nullable = False)
     debt = db.Column(db.Float, nullable = False)
+    flag = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
 
@@ -48,11 +49,12 @@ def admin():
         abort(401)
     
     datas = User.query.filter(User.user_level!=1).all()
+    count = User.query.count()-1
     if request.args.get('search'):
         datas = User.query.filter_by(user = request.args.get('search')).filter(User.user_level!=1).all()
         if datas == []:
             flash("no user found!",category="error")
-    return render_template("admin.html",datas=datas)
+    return render_template("admin.html",datas=datas,count=count)
 
 #Adding a user
 @app.route("/admin/adduser/", methods = ["POST","GET"])
@@ -96,16 +98,18 @@ def edituser(id):
             password = hashlib.md5(request.form.get("password").encode('utf-8')).hexdigest()
             
         if request.form["action"] == "update_debt":
+            print(type(request.form["action"]))
             try:
                 if debt == f'-{debt}':
                     datas.debt -= debt
                 datas.debt += float(debt)
+
                 flash("Your Debt has been updated successfully.",category="message")
             except:
                 flash("Wrong Format,Try again later!",category="erro")
-
         if request.form["action"] == "reset_debt":
-            datas.debt = float(0)
+            datas.debt = 0
+            flash("Debt been clear!",category='message')
         if request.form["action"] == "update_user":
             check = User.query.filter_by(user=user).first()
             if check == None:        
@@ -196,4 +200,4 @@ def install():
     return render_template("install.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug="True")
