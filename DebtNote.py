@@ -4,7 +4,7 @@ import hashlib
 from flask import Flask,render_template,redirect,request,url_for,session,flash,abort
 import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Sequence
+from sqlalchemy import Sequence,func
 
 load_dotenv(override=True)
 set_adminpass = os.getenv("set_adminpass")
@@ -48,13 +48,16 @@ def admin():
     if session.get("user_level",0) != 1:
         abort(401)
     
+    dtime = datetime.datetime.now()
+    debt_sum = User.query.with_entities(func.sum(User.debt)).scalar()
+    debt_zero = User.query.filter(User.debt == 0).count()-1 
     datas = User.query.filter(User.user_level!=1).all()
     count = User.query.count()-1
     if request.args.get('search'):
         datas = User.query.filter_by(user = request.args.get('search')).filter(User.user_level!=1).all()
         if datas == []:
             flash("no user found!",category="error")
-    return render_template("admin.html",datas=datas,count=count)
+    return render_template("admin.html",datas=datas,count=count,dtime=dtime,debt_sum=debt_sum,debt_zero=debt_zero)
 
 #Adding a user
 @app.route("/admin/adduser/", methods = ["POST","GET"])
@@ -77,7 +80,6 @@ def adduser():
             flash("This password has been taken,try deffrent one!",category="error")
             return redirect(url_for("adduser"))
         flash("This username has been taken,try deffrent one!",category="error")
-        #return redirect(url_for("adduser"))
     return render_template("adduser.html")
 
 #####################Edit User details#######################

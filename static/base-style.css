@@ -35,6 +35,22 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    font-weight: 500;
+    border: 1px solid beige;
+    border-radius: 5px;
+}
+#sidebar li{
+    margin:0px 0px 15px 10px;
+}
+#sidebar ul li:first-child{
+    font-size: 25px;
+    margin: 10px 0 30px 25px;
+
+}
+#sidebar ul li:last-child{
+    margin-top: 40vh;
 }
 #sidebar ul{
     list-style: none;
