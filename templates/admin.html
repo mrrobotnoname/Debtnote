@@ -20,11 +20,11 @@
         <div class="date-time">
             <div class="date">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0a0909"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>
-                <span>{{dtime.strftime('%d/%m/%Y')}}</span>
+                <span>{{dtime.strftime('%d/%b/%Y')}}</span>
             </div>
             <div class="time">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0a0909"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
-                <span>{{dtime.strftime('%H:%M %p')}}</span>                
+                <span>{{dtime.strftime('%I:%M %p')}}</span>                
             </div>
         </div>
     </div>
@@ -58,8 +58,8 @@
             
             <div class="card flag-users">
                 <div class="card-text">
-                    <h5>Flagged users</h5>
-                    <span>{{count}}</span>
+                    <h5>Unpaid users</h5>
+                    <span>{{count - debt_zero}}</span>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#FFFFFF"><path d="M500-568ZM200-120v-680h272.67q-5 16-7.67 33t-3.67 33.67H266.67V-486H574l18 83.33h141.33V-460q16.67-.67 33.67-3.33 17-2.67 33-8V-336H536l-17.96-83.33H266.67V-120H200Zm495.67-516L836-776.67l-32.67-32.66-107.66 107.66-52.34-53L610.67-721l85 85Zm27.66-282.67q81.34 0 138.67 57.33 57.33 57.33 57.33 138.67 0 81.34-57.33 138.67-57.33 57.33-138.67 57.33-81.34 0-138.67-57.33-57.33-57.33-57.33-138.67 0-81.34 57.33-138.67 57.33-57.33 138.67-57.33Z"/></svg>
             </div>
@@ -68,55 +68,63 @@
     
         <div class="data-tables">
             <div class="table-all">
-                <table class="table ">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Username</th>
                             <th>Debt</th>
-                            <th>Edit</th>
+                            <th></th>
                         </tr>
                     </thead>
                 
                     {% for data in datas %}
-                    <tr>
-                        <td>{{data.id-1}}</td>
-                        <td>{{data.user}}</td>
-                        <td>Rs.{{data.debt}}</td>
-                        <td><a href="{{ url_for('edituser', id=data.id) }}">Edit</a></td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>{{data.id-1}}</td>
+                            <td>{{data.user}}</td>
+                            <td>Rs.{{data.debt}}</td>
+                            <td><a href="{{ url_for('edituser', id=data.id) }}" class="btn btn-info">Edit</a></td>
+                        </tr>
+                    </tbody>
                         {% endfor %}
                 
                 </table>
             </div>
             
             {% elif datas | length == 1 %}
-            <a href="{{ url_for('adduser')}}" class="redirect add user">Add a new user</a>
-            <a href="{{ url_for('admin') }}">Return</a>
             <div class="data-tables">
-                <table class="table">
-                    <tr>
-                        <th>Id</th>
-                        <th>Username</th>
-                        <th>Debt</th>
-                        <th>Edit</th>
-                    </tr>
-                
-                    {% for data in datas %}
-                    <tr>
-                        <td>{{data.id-1}}</td>
-                        <td>{{data.user}}</td>
-                        <td>Rs.{{data.debt}}</td>
-                        <td><a href="{{ url_for('edituser', id=data.id) }}">Edit</a></td>
-                    </tr>
-                        {% endfor %}
-                
-                </table>
-            </
+                <div class="table-all">
+                    <table class="table" >
+                        <tr>
+                            <th>Id</th>
+                            <th>Username</th>
+                            <th>Debt</th>
+                            <th>Edit</th>
+                        </tr>
+                    
+                        {% for data in datas %}
+                        <tr>
+                            <td>{{data.id-1}}</td>
+                            <td>{{data.user}}</td>
+                            <td>Rs.{{data.debt}}</td>
+                            <td><a href="{{ url_for('edituser', id=data.id) }}" class="btn btn-info">Edit</a></td>
+                        </tr>
+                            {% endfor %}
+                    
+                    </table>
+                </div>
+            </div>
+            <div class="return no-user-found">
+                <a href="{{ url_for('adduser')}}" class="btn btn-dark btn-lg admin-btn">Add user</a>
+                <a href="{{ url_for('admin') }}" class="btn btn-primary btn-lg admin-btn">Return</a>
+            </div>
             {% elif datas | length == 0 %}
-            <p>No user found!</p>
-            <a href="{{ url_for('adduser')}}" class="redirect add user">Add a new user</a>
-            <a href="{{ url_for('admin') }}">Return</a>
+            <div class="no-user-found">
+                <p>No user found!</p>
+                <a href="{{ url_for('adduser')}}" class="btn btn-dark btn-lg admin-btn">Add user</a>
+                <a href="{{ url_for('admin') }}" class="btn btn-primary btn-lg admin-btn">Return</a>
+            </div>
             {% endif %}
         </div>
     </div>
