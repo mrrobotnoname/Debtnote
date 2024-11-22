@@ -23,7 +23,7 @@ body{
     grid-template-areas: 
     "sidebar alert"
     "sidebar main"
-}
+}   
 #sidebar{
     grid-area: sidebar;
     box-sizing: border-box;
