@@ -30,7 +30,6 @@ body{
     height: 100vh;
     width: 200px;
     background-color: var(--base-clr);
-    border-right: 1px solid var(--line-clr);
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -38,8 +37,6 @@ body{
     position: sticky;
     top: 0;
     font-weight: 500;
-    border: 1px solid beige;
-    border-radius: 5px;
 }
 #sidebar li{
     margin:0px 0px 15px 10px;
@@ -50,7 +47,7 @@ body{
 
 }
 #sidebar ul li:last-child{
-    margin-top: 40vh;
+    margin-top: auto
 }
 #sidebar ul{
     list-style: none;
@@ -79,6 +76,13 @@ body{
 
 .alert{
     grid-area: alert;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25%;
+    z-index: 10000;
+    box-shadow: 5px 5px 30px rgba(65, 61, 61, 0.342);
+
 }
 .main{
     grid-area: main;

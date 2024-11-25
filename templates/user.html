@@ -1,22 +1,35 @@
 {%extends "base.html" %}
 {% block title %}User Pannel{% endblock %}
-
-
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename ='user-style.css') }}">
+{% endblock %}
 {% block content %}
-<h1>Wellcome to User Pannel {{datas.user}}</h1>
+
+{% for data in datas%}
+
+<h1>Wellcome to {{data.user}}</h1>
  
-<table border="1px">
-    <tr>
-        <td>Name</td>
-        <td>Debt</td>
-        <td>Last Transaction Date</td>
-    </tr>
-    {% for data in datas%}
-    <tr>
-        <td>{{data.user}}</td>
-        <td>Rs.{{data.debt}}</td>
-        <td>{{data.created_at.strftime('%Y-%m-%d')}}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="content">
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Create Date</th>
+                <th>Last update Date</th>
+                <th>Last Update time</th>
+            </tr>
+            <tr>
+                <td>{{data.id-1}}</td>
+                <td>{{data.user}}</td>
+                <td>Rs{{data.debt}}</td>
+                <td>{{data.created_at.strftime('%d/%m/%Y')}}</td>
+                <td>{{data.updated_at.strftime('%d/%m/%Y')}}</td>
+                <td>{{data.updated_at.strftime('%H:%m %p')}}</td>
+        
+            </tr>
+        </table>
+    </div>
+
+{% endfor %}
 {% endblock %}

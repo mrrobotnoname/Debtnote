@@ -2,9 +2,10 @@ from dotenv import load_dotenv
 import os
 import hashlib
 from flask import Flask,render_template,redirect,request,url_for,session,flash,abort
-import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Sequence,func
+from datetime import datetime
+import pytz
 
 load_dotenv(override=True)
 set_adminpass = os.getenv("set_adminpass")
@@ -14,7 +15,7 @@ app.secret_key = os.getenv("secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("database_url")
 db = SQLAlchemy(app)
 
-
+tzone = pytz.timezone('Asia/Colombo')
 
 #######Database Model######
 class User(db.Model):
@@ -24,8 +25,8 @@ class User(db.Model):
     user_level = db.Column(db.Integer, nullable = False)
     debt = db.Column(db.Float, nullable = False)
     flag = db.Column(db.Integer)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc).astimezone(tzone))
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now(pytz.utc).astimezone(tzone))
 
 with app.app_context():
     db.create_all()
@@ -39,7 +40,7 @@ def index():
         return redirect(url_for('admin'))
     if session["user_level"] == 0:
         datas = User.query.filter_by(user = session["user"]).all()
-        flash(f"{session['user']} Wellcome to Debt-Note",category="message")
+        flash("welcome", category="message")
         return render_template("user.html",datas=datas)
 
 #Admin pannel
@@ -48,7 +49,7 @@ def admin():
     if session.get("user_level",0) != 1:
         abort(401)
     
-    dtime = datetime.datetime.now()
+    dtime = datetime.now(pytz.utc).astimezone(tzone)
     debt_sum = User.query.with_entities(func.sum(User.debt)).scalar()
     debt_zero = User.query.filter(User.debt == 0).count()-1 
     datas = User.query.filter(User.user_level!=1).all()
@@ -106,31 +107,31 @@ def edituser(id):
                     datas.debt -= debt
                 datas.debt += float(debt)
 
-                flash("Your Debt has been updated successfully.",category="message")
+                flash("Your Debt has been updated.",category="message")
             except:
                 flash("Wrong Format,Try again later!",category="erro")
         if request.form["action"] == "reset_debt":
             datas.debt = 0
-            flash("Debt been clear!",category='message')
+            flash("Debt has been cleared",category='message')
         if request.form["action"] == "update_user":
             check = User.query.filter_by(user=user).first()
             if check == None:        
                 datas.user = user
-                flash("Your username has been changed successfully.",category="message")
+                flash("Your username has been changed.",category="message")
             else:
                 flash("username allredy exsist",category="error")
         if request.form["action"] == "update_password":
             check = User.query.filter_by(password=password).first()
             if check is None:
                 datas.password = password
-                flash("Your passowrd has been changed successfully.",category="message")
+                flash("Your passowrd has been changed.",category="message")
             else:
                 flash("This password allrady exsist",category="error")
         db.session.commit()
         if request.form["action"] == "delete_user":
             if request.form.get("delete") == datas.user:
                 db.session.delete(datas)
-                flash(f'{datas.user}\'s accouunt has been deleted successfully!',category="message")
+                flash(f'{datas.user}\'s accouunt has been deleted.',category="message")
                 db.session.commit()
                 remaining_users = User.query.filter(User.id > datas.id).all()
                 for user in remaining_users:

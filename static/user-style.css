@@ -1,0 +1,15 @@
+body{
+    background: rgb(130, 191, 199);
+    color: rgb(0, 0, 0);
+}
+
+.content{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%);
+    height: 35vh;
+}
+.content table {
+    border-radius: 40px;
+}
