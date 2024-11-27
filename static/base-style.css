@@ -33,9 +33,9 @@ body{
     list-style: none;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     position: sticky;
     top: 0;
+    
     font-weight: 500;
 }
 #sidebar li{
@@ -47,11 +47,13 @@ body{
 
 }
 #sidebar ul li:last-child{
-    margin-top: auto
+    margin-top: 250PX;
 }
 #sidebar ul{
     list-style: none;
     padding-left: 0;
+    height: 100vh;
+    margin: 0;
 }
 #sidebar ul li.active a{
     color: var(--acent-clr);

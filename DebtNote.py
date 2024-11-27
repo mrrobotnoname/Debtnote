@@ -31,6 +31,8 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
+###globle variable#####
+
 ###Home page###
 @app.route('/')
 def index():
@@ -39,17 +41,17 @@ def index():
     if session["user_level"] == 1:        
         return redirect(url_for('admin'))
     if session["user_level"] == 0:
+        dtime = datetime.now(pytz.utc).astimezone(tzone)
         datas = User.query.filter_by(user = session["user"]).all()
         flash("welcome", category="message")
-        return render_template("user.html",datas=datas)
+        return render_template("user.html",datas=datas,dtime=dtime)
 
 #Admin pannel
 @app.route("/admin/")
 def admin():
     if session.get("user_level",0) != 1:
         abort(401)
-    
-    dtime = datetime.now(pytz.utc).astimezone(tzone)
+    dtime = datetime.now(pytz.utc).astimezone(tzone)  
     debt_sum = User.query.with_entities(func.sum(User.debt)).scalar()
     debt_zero = User.query.filter(User.debt == 0).count()-1 
     datas = User.query.filter(User.user_level!=1).all()
