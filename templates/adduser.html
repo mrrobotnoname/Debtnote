@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename ='adduser-style.css') }}">
+{% endblock %}
 {% block title %}AddUser{% endblock %}
 
 {% block content %}
@@ -7,14 +9,18 @@
 
     <div class="adduser-form">
         <form method="post">
-            <input type="text" class="adduser" name="adduser" placeholder="Username" required="" autocomplete="off"><br>
-            <input type="text" class="addpwd" name="addpwd" placeholder="Passowrd" required="" autocomplete="off" ><br>
-            <input type="submit" value="Add">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" name="adduser" placeholder="username" required>
+                <label for="floatingInput">username</label>
+              </div>
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingPassword" name="addpwd" autocomplete="off" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+
+            <input type="submit" value="Add" class="btn btn-outline-primary">
+            <a href="{{ url_for('admin')}}">Return to the Admin Pannel</a>
         </form>
     </div>
-    <div class="error">
-        <p>{{error}}</p>
-    </div>
 
-    <a href="{{ url_for('admin')}}">Return to the Admin Pannel</a>
 {% endblock %}

@@ -1,0 +1,53 @@
+main{
+    position: relative;
+}
+h1{
+    text-align: center;
+    font-weight: 700;
+    font-size: 65px;
+    color: rgb(35, 75, 37);
+}
+
+.form-debt{
+    width: 80%;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 40px;
+    border-radius: 40px;
+    box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.37);
+    background: rgb(5, 57, 77);
+}
+
+.container{
+    display: flex;
+    margin: 0;
+    padding: 20px;
+    gap: 10px;
+}
+.input-group{
+    width: 80%;
+}
+.form form{
+    display: flex;
+    gap: 20px;
+}
+.debt-update{
+    padding-right: 0;
+}
+.edit-password{
+    margin-top: 10px;
+}
+.input-group span{
+    background: wheat;
+}
+.form-debt a{
+    color: #e6e6ef;
+    text-decoration: none;
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+}
+

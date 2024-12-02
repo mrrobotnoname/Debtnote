@@ -1,63 +1,69 @@
 {% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static',filename ='edituser-style.css') }}">
+{% endblock %}
 {% block title %}Edit user Details{% endblock %}
 
-
 {% block content %}
-
 <h1>Edit user</h1>
 
-<div class="form edit debt">
-        <div class="update debt">
-            <form action="" method="post">
-                <input type="hidden" name="action" value="update_debt"></in ><br>
-                <label class="col-form-label">Update Debt:</label><input type="text" name="debt" placeholder="Rs.{{datas.debt}}" autofocus="">
-                <input type="submit" value="Update" class="btn btn-primary">
-            </form>
+<div class="form-debt">
+        <div class="container">
+            <div class="form debt-update">
+                <form method="post">
+                    <input type="hidden" name="action" value="update_debt">
+                    <div class="input-group">
+                        <span class="input-group-text" id="update">Update Debt</span>
+                        <input type="text" name="debt" class="form-control" placeholder="Rs.{{datas.debt}}" aria-label="update" aria-describedby="basic-addon1">
+                      </div>
+                    <div class="relevent">
+                        <input type="submit" value="Update" class="btn btn-primary relevent">
+                    </div>
+                </form>
+            </div>
+            <div class="form debt-reset">
+                <form  method="post">
+                    <input type="hidden" name="action" value="reset_debt">
+                    <div class="abs">
+                        <input type="submit" value="Reset" class="btn btn-danger">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="debt reset">
-            <form  method="post">
-                <input type="hidden" name="action" value="reset_debt">
-                <input type="submit" value="Reset" class="btn btn-danger">                
-            </form>
-        </div>
-        </div>
-<div class="form edit username">
-    <form  method="post">
-        <input type="hidden" name="action" value="update_user"></input><br>
-        <label >Update Username:</label><input type="text" name="name" placeholder="{{datas.user}}">
-        <input type="submit" value="change" class="btn btn-success">
-    </form>
-</div>
-<div class="form edit password">
-    <form action="" method="post">
-        <input type="hidden" name="action" value="update_password"></input><br>
-        <label >Update Password:</label><input type="text" name="password" placeholder="password" required>
-        <input type="submit" value="change">
-    </form>
-</div>
-<div class="form delete user">
-    <form action="" method="post">
-        <input type="hidden" name="action" value="delete_user"></input><br>
-        <label >Delete user:</label><input type="text" name="delete" placeholder="Enter username here to delete ">
-        <input type="submit" value="Delete">
-    </form>
-</div>
+    <div class="form edit username">
+        <form  method="post">
+            <input type="hidden" name="action" value="update_user"></input><br>
+            <div class="input-group">
+                <span class="input-group-text" id="updateUser">Change Username</span>
+                <input type="text" name="name" class="form-control" placeholder="{{datas.user}}" aria-label="updateUser" aria-describedby="basic-addon1">
+              </div> 
+            <input type="submit" value="change" class="btn btn-success">
+        </form>
+    </div>
+    <div class="form edit-password">
+        <form method="post">
+            <input type="hidden" name="action" value="update_password"></input><br>
+            <div class="input-group ">
+                <span class="input-group-text" id="updatePwd">Change Password</span>
+                <input type="text" name="password" class="form-control" placeholder="password" aria-label="updatePwd" aria-describedby="basic-addon1">
+              </div> 
+            <input type="submit" value="change" class="btn btn-success">
+        </form>
+    </div><br>
+    <div class="form delete user">
+        <form action="" method="post">
+            <input type="hidden" name="action" value="delete_user"></input><br>
+            <div class="input-group ">
+                <span class="input-group-text" id="delete">Delete User</span>
+                <input type="text" name="delete" class="form-control" placeholder="Enter username here to delete" aria-label="delete" aria-describedby="basic-addon1">
+              </div> 
+            <input type="submit" value="Delete" class="btn btn-warning">
+        </form>
+    </div>
 
 
 <a href="{{ url_for('admin')}}">Return to the admin</a>
 
-<script>
-function sendValue() {
-    const value = "reset_debt";
-
-    fetch('/admin/edituser/<int:id>', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ value: value })
-    })
-}
-</script>
 
 {% endblock %}

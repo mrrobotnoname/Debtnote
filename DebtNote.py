@@ -19,17 +19,15 @@ tzone = pytz.timezone('Asia/Colombo')
 
 #######Database Model######
 class User(db.Model):
-    id = db.Column(db.Integer,Sequence('user_id-seq',start=0) ,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
     user = db.Column(db.String(50), unique = True, nullable = False)
     password = db.Column(db.CHAR(100), unique = True, nullable = False)
     user_level = db.Column(db.Integer, nullable = False)
     debt = db.Column(db.Float, nullable = False)
-    flag = db.Column(db.Integer)
-    created_at = db.Column(db.DateTime, default=datetime.now(pytz.utc).astimezone(tzone))
-    updated_at = db.Column(db.DateTime, onupdate=datetime.now(pytz.utc).astimezone(tzone))
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
 
-with app.app_context():
-    db.create_all()
+
 
 ###globle variable#####
 
@@ -43,7 +41,6 @@ def index():
     if session["user_level"] == 0:
         dtime = datetime.now(pytz.utc).astimezone(tzone)
         datas = User.query.filter_by(user = session["user"]).all()
-        flash("welcome", category="message")
         return render_template("user.html",datas=datas,dtime=dtime)
 
 #Admin pannel
@@ -75,7 +72,7 @@ def adduser():
         checkpwd = User.query.filter_by(password=password).first()
         if checkuser is None:
             if checkpwd is None:
-                add = User(user=user, password=password, user_level= 0, debt=0)
+                add = User(user=user, password=password, user_level= 0, debt=0,created_at=datetime.now(pytz.utc).astimezone(tzone),updated_at=datetime.now(pytz.utc).astimezone(tzone))
                 db.session.add(add)
                 db.session.commit()
                 flash("New user has been created successfully!",category="message")
@@ -96,18 +93,18 @@ def edituser(id):
     if datas is None:
         flash("No user Found", category= "info")
         return redirect(url_for("admin"))    
-    if request.method =="POST" and "action" in request.form:
+    if request.method == "POST" and "action" in request.form:
         debt = request.form.get("debt")
-        user= request.form.get("name")
+        user = request.form.get("name")
         if request.form.get("password") is not None:
             password = hashlib.md5(request.form.get("password").encode('utf-8')).hexdigest()
             
         if request.form["action"] == "update_debt":
-            print(type(request.form["action"]))
             try:
                 if debt == f'-{debt}':
                     datas.debt -= debt
                 datas.debt += float(debt)
+                datas.updated_at = datetime.now(pytz.utc).astimezone(tzone)
 
                 flash("Your Debt has been updated.",category="message")
             except:
@@ -134,14 +131,13 @@ def edituser(id):
             if request.form.get("delete") == datas.user:
                 db.session.delete(datas)
                 flash(f'{datas.user}\'s accouunt has been deleted.',category="message")
-                db.session.commit()
                 remaining_users = User.query.filter(User.id > datas.id).all()
                 for user in remaining_users:
                     user.id -=1
                 db.session.commit()
                 return redirect(url_for("admin"))
             flash("Wrong username,Plese try again!",category="error")
-        return redirect(url_for("edituser", id = id))
+        return redirect(url_for("admin")) 
     return render_template("edituser.html",datas=datas)
    
 ########################Login page######################
@@ -205,4 +201,6 @@ def install():
     return render_template("install.html")
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug="True")

@@ -47,7 +47,10 @@ body{
     position: absolute;
     right: 0;
 }
-
+.admin-content{
+    margin-top: -70px;
+    padding-top: 70px;
+}
 .cards {
     width: 100%;
     min-height: 20vh;
